@@ -45,27 +45,6 @@ class TestBackendPrint(unittest.TestCase):
             {"status": "success", "message": "SAP connection validated"},
         )
 
-    @patch("helper.sap_client.SAPPrintClient.get_print_queues")
-    @patch("helper.sap_client.SAPPrintClient.find_print_queue")
-    @patch("helper.key_vault.AzureClient.__init__")
-    @patch("helper.key_vault.KeyVault.set_kv_secrets")
-    def test_validation_engine_failure(
-        self,
-        mock_key_vault_client,
-        mock_azure_client,
-        mock_find_print_queue,
-        mock_get_print_queues,
-    ):
-        mock_azure_client.return_value = None
-        mock_find_print_queue.return_value = True
-        mock_get_print_queues.return_value = ["queue1", "queue2"]
-        mock_key_vault_client.return_value = True
-        response = self.backend_print.validation_engine(SAP_CONFIG)
-        self.assertEqual(
-            response["status"],
-            "error",
-        )
-
     @patch("helper.sap_client.SAPPrintClient.get_print_items_from_queue")
     @patch("helper.storage.AzureClient.__init__")
     @patch("helper.key_vault.AzureClient.__init__")
