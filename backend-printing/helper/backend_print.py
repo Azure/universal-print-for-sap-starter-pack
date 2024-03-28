@@ -244,7 +244,7 @@ class BackendPrint:
             for message in messages:
                 queue_message, message_content = message
                 self.logger.info(f"[{self.log_tag}] Logic app init for printing")
-                response = UniversalPrintUsingLogicApp.call_logic_app(
+                response = UniversalPrintUsingLogicApp().call_logic_app(
                     print_items=message_content["print_item"]
                 )
                 sap_config = self._get_sap_config(

@@ -2,15 +2,6 @@
     "IsEncrypted": false,
     "Values": {
         "FUNCTIONS_WORKER_RUNTIME": "python",
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "KEY_VAULT_NAME": "dev1norwayeastmsi",
-        "AZURE_CLIENT_ID": "4c2dd3ee-959f-4896-9f03-11fb35d785d4",
-        "AZURE_CLIENT_SECRET": "Xyv8Q~59Q2S0pZH12QogKsa~n1wQVCsODmhqXbit",
-        "AZURE_TENANT_ID": "c01abe72-ffef-4ecc-bda0-937975b49e6b",
-        "STORAGE_ACCESS_KEY": "DefaultEndpointsProtocol=https;AccountName=dev1norwayeastiqjh995f;AccountKey=61+Omo/3v9aMzkH4h9cM89emSXc489P2a9EUeodpfma1ZqGpLnkAHR64DeeQ/olu2qfPFU/9FSjK+ASt2hZ/yw==;EndpointSuffix=core.windows.net",
-        "STORAGE_QUEUE_NAME": "printjobs",
-        "STORAGE_TABLE_NAME": "printjobstatus",
-        "MSI_CLIENT_ID": "5e6375e4-fd09-4a21-b6c5-9027bc3e7ae5",
-        "LOGIC_APP_URL": "https://prod-11.norwayeast.logic.azure.com:443/workflows/c926ae082e8f4764afb2252cd1c37264/triggers/FunctionAppCallee/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FFunctionAppCallee%2Frun&sv=1.0&sig=lE1l7E2XQQjvcHqB-FI4huEknnNxRUKLrIkVhGVknPg"
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true"
     }
 }

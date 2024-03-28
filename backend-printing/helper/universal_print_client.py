@@ -44,7 +44,10 @@ class UniversalPrintClient:
 
 
 class UniversalPrintUsingLogicApp:
-    def call_logic_app(print_items) -> requests.Response:
+    def __init__(self) -> None:
+        pass
+
+    def call_logic_app(self, print_items) -> requests.Response:
         """Call the logic app to print the items.
         Args:
             print_item: print item json message
