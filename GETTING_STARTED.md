@@ -122,22 +122,23 @@ Invoke-Expression -Command $scriptPath
 
 Repeat step 4 and 5 for each SAP environment you want to connect to the backend print worker.
 
-## Ready, Set, Print!
+
+## 🚀 Ready, Set, Print!
 With everything in place, you’re ready to start printing from SAP to Azure’s Universal Print. It’s a game-changer for large-scale printing needs!
 
 ### Naming convention followed for the resources deployed:
 Control Plane:
-Resource Group Name: $CONTROL_PLANE_ENVIRONMENT_CODE-RG
-Storage Account Name: $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting
-Container Registry: sapprintacr
+- Resource Group Name: $CONTROL_PLANE_ENVIRONMENT_CODE-RG
+- Storage Account Name: $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting
+- Container Registry: sapprintacr
 
 Workload Plane:
-Resource Group Name: $WORKLOAD_ENV_NAME-$LOCATION-RG
-App Server Plan: $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN
-Function App: $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP
-Storage Account: $WORKLOAD_ENV_NAME$LOCATION$GUID
-Key Vault: $WORKLOAD_ENV_NAME$LOCATIONKV
-Logic App: $WORKLOAD_ENV_NAME$LOCATIONMSI
-Logic App Custom Connector: $WORKLOAD_ENV_NAME$LOCATION-$GUID
-API Connection: UPGRAPH-CONNECTION$GUID
+- Resource Group Name: $WORKLOAD_ENV_NAME-$LOCATION-RG
+- App Server Plan: $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN
+- Function App: $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP
+- Storage Account: $WORKLOAD_ENV_NAME$LOCATION$GUID
+- Key Vault: $WORKLOAD_ENV_NAME$LOCATIONKV
+- Logic App: $WORKLOAD_ENV_NAME$LOCATIONMSI
+- Logic App Custom Connector: $WORKLOAD_ENV_NAME$LOCATION-$GUID
+- API Connection: UPGRAPH-CONNECTION$GUID
 
