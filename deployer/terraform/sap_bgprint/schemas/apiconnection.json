@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "api_connection_name": {
+            "defaultValue": "apiconnectionname",
+            "type": "string"
+        },
+        "custom_api_resourceid": {
+            "defaultValue": "/subscriptions/000000-000-0000000-0000000-00000000/resourceGroups/rgName/providers/Microsoft.Web/customApis/name",
+            "type": "string"
+        },
+        "location": {
+            "defaultValue": "location",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('api_connection_name')]",
+            "location": "[parameters('location')]",
+            "kind": "V1",
+            "properties": {
+                "customParameterValues": {},
+                "nonSecretParameterValues": {},
+                "api": {
+                    "name": "[parameters('api_connection_name')]",
+                    "displayName": "[parameters('api_connection_name')]",
+                    "description": "Microsoft Universal Print custom API connection",
+                    "iconUri": "https://content.powerapps.com/resource/makerx/static/media/default-connection-icon.74fb37fa.svg",
+                    "id": "[parameters('custom_api_resourceid')]",
+                    "type": "Microsoft.Web/customApis"
+                },
+                "testLinks": []
+            }
+        }
+    ],
+    "outputs": {
+        "apiConnectionId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Web/connections', parameters('api_connection_name'))]"
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "properties": {
+        "printer_share_id": {
+            "type": "string"
+        },
+        "document_name": {
+            "type": "string"
+        },
+        "document_file_size": {
+            "type": "integer",
+            "format": "int32"
+        },
+        "document_content_type": {
+            "type": "string"
+        },
+        "document_blob": {
+            "type": "string"
+        },
+        "queue_item_id": {
+            "type": "string"
+        },
+        "print_job_copies": {
+            "type": "integer",
+            "format": "int32"
+        }
+    }
+}

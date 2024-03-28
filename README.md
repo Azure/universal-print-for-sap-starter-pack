@@ -1,14 +1,10 @@
 # SAP Printing with Microsoft Universal Print
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+Printing from SAP landscapes is a requirement for many customers. Examples can be data list printing, mass- or label printing. Such production and batch print scenarios are often solved with specialized hardware, drivers, and printing solutions. 
 
-As the maintainer of this project, please make a few updates:
+We distinguish between end-user-based printing from SAPGUI, web browsers, and web-based SAP front end apps. We refer to those use cases as frontend printing. See this Microsoft Learn page for more details on how to set that up with SAP. 
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+Unattended mass-print jobs initiated by apps rather than people we refer to as backend printing. Follow [this guide](GETTING_STARTED.md) to get started. 
 
 ## Contributing
 
