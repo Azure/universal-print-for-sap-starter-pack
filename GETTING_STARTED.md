@@ -28,7 +28,8 @@ The architecture is designed with simplicity and efficiency in mind, consisting 
 - **Backend Print Solution**: The solution that takes care of reading print jobs from SAP and delivering them to the right printers.
 - **Universal Print Devices**: These are your printers, all set up and registered in Azure, waiting to receive and print your documents.
   
-![Drawing](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/86314060/087ad957-0531-4a38-b837-877c1bfd7112)
+![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/86314060/71e17192-3281-40ec-b0ed-a9a0f8e66eb8)
+
 
 ## 🎨 Configure backend printing solution:
 The backend printing solution operates like a well-oiled machine, with two main components working in harmony:
