@@ -27,15 +27,13 @@ The architecture is designed with simplicity and efficiency in mind, consisting 
 - **Azure AD Tenant**: Enhanced with Universal Print, it’s the backbone that supports your printing infrastructure.
 - **Backend Print Solution**: The solution that takes care of reading print jobs from SAP and delivering them to the right printers.
 - **Universal Print Devices**: These are your printers, all set up and registered in Azure, waiting to receive and print your documents.
-[Architecture Diagram](link to image)
+![Drawing](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/86314060/087ad957-0531-4a38-b837-877c1bfd7112)
 
 ## 🎨 Configure backend printing solution:
 The backend printing solution operates like a well-oiled machine, with two main components working in harmony:
 **1. Deployment Infrastructure (Control Plane)**: Think of this as the conductor of an orchestra, overseeing the setup and ensuring that all parts of the printing process are perfectly tuned and ready for action.
 **2. Backend Print Worker (Workload Plane)**: This is the musician of the group, diligently reading the music (spool requests) and playing the notes (sending print jobs) to the Universal Print devices with precision and care.
 Together, these components form a seamless solution that transforms the complex task of SAP printing into a smooth and effortless performance. The dependency between the two components is illustrated in the diagram below:
-
-[Backend Printing Diagram](link to image)
 
 ### Control Plane
 The control plane is primarily responsible for managing the infrastructure state of the backend print worker and the Azure resources. The control plane is deployed using setup scripts and consists of the following components:
