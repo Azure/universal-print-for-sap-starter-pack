@@ -12,8 +12,6 @@ class PrintQueue:
 
     queue_name: str
     print_share_id: str
-    sap_client_id: str = field(default=400)
-
 
 @dataclass
 class SAPSystem:

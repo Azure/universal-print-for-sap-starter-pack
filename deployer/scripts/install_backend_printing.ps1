@@ -10,6 +10,22 @@ $CONTAINER_NAME = "tfstate"
 $ACR_NAME = "sapprintacr"
 $ENABLE_LOGGING_ON_FUNCTION_APP = $Env:ENABLE_LOGGING_ON_FUNCTION_APP
 
+$variables = @("WORKLOAD_ENV_NAME",
+  "ARM_TENANT_ID",
+  "ARM_SUBSCRIPTION_ID",
+  "CONTROL_PLANE_SERVICE_PRINCIPAL_NAME",
+  "CONTROL_PLANE_RESOURCE_GROUP_NAME",
+  "STORAGE_ACCOUNT_NAME",
+  "CONTAINER_NAME",
+  "ACR_NAME",
+  "ENABLE_LOGGING_ON_FUNCTION_APP")
+
+foreach ($var in $variables) {
+  if ([string]::IsNullOrEmpty((Get-Variable -Name $var).Value)) {
+    Write-Host "$var is null or empty!" -ForegroundColor Red
+  }
+}
+
 if ($ARM_TENANT_ID.Length -eq 0) {
   az login --output none --only-show-errors
 }
@@ -83,6 +99,7 @@ az group create --name $CONTROL_PLANE_RESOURCE_GROUP_NAME --location eastus --on
 # Create the Azure container registry and build the docker image
 Write-Host "######## Build the docker image and push it to the ACR registry ########" -ForegroundColor Green
 az acr create --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --name $ACR_NAME --sku Basic --only-show-errors
+az acr show --name $ACR_NAME --only-show-errors
 az acr login --name $ACR_NAME --expose-token --only-show-errors
 az acr build --registry $ACR_NAME --image bgprinting:latest --file ./backend-printing/Dockerfile ./backend-printing --only-show-errors
 
