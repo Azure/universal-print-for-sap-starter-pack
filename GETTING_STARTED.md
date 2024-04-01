@@ -118,6 +118,17 @@ Invoke-Expression -Command $scriptPath
 }
 ```
 
+**Paramaters**
+
+| Name  | Description | Type | Example
+| ------------- | ------------- | ------------- | ------------- |
+| sap_environment | SAP landscape environment | string | "PROD" |
+| sap_sid | SAP system identifier | string | "SID" |
+| sap_hostname | SAP primary application server hostname or IP address with http protocol and port number | string | "http://full.qualified.domainname:8001" |
+| sap_user | SAP User with proper authorization | string | "USERNAME" |  
+| sap_password | Password for the SAP user  | string | "password"
+| sap_print_queues | List of print queue and Universal Printer Share mapping | list[map] | [{"queue_name":"ZQ1","print_share_id": "12345678-1234-1234-1234-123456789012"}
+
 5. **Test Drive**: It’s time to put the backend print worker to the test. Create a spool request in SAP and direct it to the print queue you’ve set up in the Cloud Print Manager. The backend print worker will grab the spool request and whisk it away to the Universal Print device.
 
 Repeat step 4 and 5 for each SAP environment you want to connect to the backend print worker.
