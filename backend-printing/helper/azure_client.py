@@ -3,6 +3,7 @@
 
 import os
 from azure.identity import ManagedIdentityCredential
+from azure.storage.blob import BlobClient
 from azure.keyvault.secrets import SecretClient
 from azure.storage.queue import (
     QueueClient,
@@ -36,3 +37,19 @@ class AzureClient:
         self.table_service_client = TableServiceClient.from_connection_string(
             conn_str=os.environ["STORAGE_ACCESS_KEY"], retry_total=3
         ).get_table_client(table_name=os.environ["STORAGE_TABLE_NAME"])
+
+    def get_blob_client(self, blob_name):
+        """Get the blob client
+
+        Args:
+            blob_name (string): blob name
+
+        Returns:
+            BlobClient: blob client
+        """
+        return BlobClient.from_connection_string(
+            conn_str=os.environ["STORAGE_ACCESS_KEY"],
+            container_name=os.environ["STORAGE_CONTAINER_NAME"],
+            blob_name=blob_name,
+            credential=self._credential,
+        )

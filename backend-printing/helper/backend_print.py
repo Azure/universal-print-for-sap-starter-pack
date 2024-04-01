@@ -279,7 +279,7 @@ class BackendPrint:
                 f"[{self.log_tag}] Error occurred while sending items to logic app: {e}"
             )
             self._update_print_messages_status(
-                print_messages=message_content, status=PrintItemStatus.ERROR.value
+                print_messages=[message], status=PrintItemStatus.ERROR.value
             )
 
             return {

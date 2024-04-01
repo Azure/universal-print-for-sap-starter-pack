@@ -15,9 +15,9 @@ resource "azurerm_storage_account" "storage_account" {
 
 # Import the existing storage container
 resource "azurerm_storage_container" "container" {
-    name                        = "logs"
+    name                        = "printjobs"
     storage_account_name        = azurerm_storage_account.storage_account.name
-    container_access_type       = "private"
+    container_access_type       = "container"
     depends_on                  = [ azurerm_storage_account.storage_account ]
 }
 
