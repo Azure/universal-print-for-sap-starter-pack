@@ -136,7 +136,7 @@ terraform -chdir="$terraform_directory"  refresh
 
 # Plan the terraform
 Write-Host "######## Planning the Terraform ########" -ForegroundColor Green
-terraform -chdir="$terraform_directory" plan -compact-warnings -json -no-color -parallelism=5 -out=tfplan.tfstate 
+terraform -chdir="$terraform_directory" plan -compact-warnings -json -no-color -parallelism=5
 
 # Apply the terraform
 Write-Host "######## Applying the Terraform ########" -ForegroundColor Green
