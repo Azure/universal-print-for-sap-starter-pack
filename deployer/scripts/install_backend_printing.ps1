@@ -2,7 +2,7 @@
 
 $WORKLOAD_ENV_NAME = $Env:WORKLOAD_ENV_NAME
 $ARM_TENANT_ID = $Env:ARM_TENANT_ID
-$ARM_SUBSCRIPTION_ID = $Env:ARM_SUBSCRIPTION_ID
+$AZURE_SUBSCRIPTION_ID = $Env:AZURE_SUBSCRIPTION_ID
 $CONTROL_PLANE_SERVICE_PRINCIPAL_NAME = $Env:CONTROL_PLANE_SERVICE_PRINCIPAL_NAME
 $CONTROL_PLANE_RESOURCE_GROUP_NAME = $Env:CONTROL_PLANE_ENVIRONMENT_CODE + "-RG"
 $STORAGE_ACCOUNT_NAME = $Env:CONTROL_PLANE_ENVIRONMENT_CODE.ToLower() + "tstatebgprinting"
@@ -12,7 +12,7 @@ $ENABLE_LOGGING_ON_FUNCTION_APP = $Env:ENABLE_LOGGING_ON_FUNCTION_APP
 
 $variables = @("WORKLOAD_ENV_NAME",
   "ARM_TENANT_ID",
-  "ARM_SUBSCRIPTION_ID",
+  "AZURE_SUBSCRIPTION_ID",
   "CONTROL_PLANE_SERVICE_PRINCIPAL_NAME",
   "CONTROL_PLANE_RESOURCE_GROUP_NAME",
   "STORAGE_ACCOUNT_NAME",
@@ -35,16 +35,16 @@ else {
 
 az config set extension.use_dynamic_install=yes_without_prompt --only-show-errors
 
-if ($ARM_SUBSCRIPTION_ID.Length -eq 0) {
-  Write-Host "$ARM_SUBSCRIPTION_ID is not set!" -ForegroundColor Red
-  $ARM_SUBSCRIPTION_ID = Read-Host "Please enter a subscription ID"
+if ($AZURE_SUBSCRIPTION_ID.Length -eq 0) {
+  Write-Host "$AZURE_SUBSCRIPTION_ID is not set!" -ForegroundColor Red
+  $AZURE_SUBSCRIPTION_ID = Read-Host "Please enter a subscription ID"
 }
 
-az account set --subscription $ARM_SUBSCRIPTION_ID
+az account set --subscription $AZURE_SUBSCRIPTION_ID
 
 $app_registration = (az ad sp list --all --filter "startswith(displayName,'$CONTROL_PLANE_SERVICE_PRINCIPAL_NAME')" --query "[?displayName=='$CONTROL_PLANE_SERVICE_PRINCIPAL_NAME'].displayName | [0]" --only-show-errors)
 
-$scopes = "/subscriptions/$ARM_SUBSCRIPTION_ID"
+$scopes = "/subscriptions/$AZURE_SUBSCRIPTION_ID"
 
 if ($app_registration.Length -gt 0) {
   Write-Host "Found an existing Service Principal:" $CONTROL_PLANE_SERVICE_PRINCIPAL_NAME
@@ -77,8 +77,8 @@ else {
 Write-Host "Service Principal Name:" $CONTROL_PLANE_SERVICE_PRINCIPAL_NAME
 
 # Assign the Service Principal to the User Access Administrator role
-az role assignment create --assignee $ARM_CLIENT_ID --role "Contributor" --subscription $ARM_SUBSCRIPTION_ID --scope /subscriptions/$ARM_SUBSCRIPTION_ID --output none
-az role assignment create --assignee $ARM_CLIENT_ID --role "User Access Administrator" --subscription $ARM_SUBSCRIPTION_ID --scope /subscriptions/$ARM_SUBSCRIPTION_ID --output none
+az role assignment create --assignee $ARM_CLIENT_ID --role "Contributor" --subscription $AZURE_SUBSCRIPTION_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID --output none
+az role assignment create --assignee $ARM_CLIENT_ID --role "User Access Administrator" --subscription $AZURE_SUBSCRIPTION_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID --output none
 
 Set-Location -Path $ENV:SAPPRINT_PATH
 
@@ -111,7 +111,7 @@ az storage account update --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --only-show-errors
 
 $Env:TF_VAR_tenant_id = $ARM_TENANT_ID
-$Env:TF_VAR_subscription_id = $ARM_SUBSCRIPTION_ID
+$Env:TF_VAR_subscription_id = $AZURE_SUBSCRIPTION_ID
 $Env:TF_VAR_client_id = $ARM_CLIENT_ID
 $Env:TF_VAR_client_secret = $ARM_CLIENT_SECRET
 $Env:TF_VAR_object_id = $ARM_OBJECT_ID
@@ -129,7 +129,7 @@ $terraform_directory = "./deployer/terraform"
 
 # Initialize the terraform
 Write-Host "######## Initializing Terraform ########" -ForegroundColor Green
-terraform -chdir="$terraform_directory" init -reconfigure -upgrade -backend-config="key=$terraform_key" -backend-config="storage_account_name=$STORAGE_ACCOUNT_NAME"  -backend-config="resource_group_name=$CONTROL_PLANE_RESOURCE_GROUP_NAME"  -backend-config="container_name=$CONTAINER_NAME"  -backend-config="tenant_id=$ARM_TENANT_ID" -backend-config="client_id=$ARM_CLIENT_ID" -backend-config="client_secret=$ARM_CLIENT_SECRET" -backend-config="subscription_id=$ARM_SUBSCRIPTION_ID"
+terraform -chdir="$terraform_directory" init -reconfigure -upgrade -backend-config="key=$terraform_key" -backend-config="storage_account_name=$STORAGE_ACCOUNT_NAME"  -backend-config="resource_group_name=$CONTROL_PLANE_RESOURCE_GROUP_NAME"  -backend-config="container_name=$CONTAINER_NAME"  -backend-config="tenant_id=$ARM_TENANT_ID" -backend-config="client_id=$ARM_CLIENT_ID" -backend-config="client_secret=$ARM_CLIENT_SECRET" -backend-config="subscription_id=$AZURE_SUBSCRIPTION_ID"
 
 # Refresh the terraform
 Write-Host "######## Refreshing Terraform ########" -ForegroundColor Green

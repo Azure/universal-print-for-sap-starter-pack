@@ -65,14 +65,21 @@ The workload plane is where the action happens. It’s all about processing thos
 Once the script does its thing, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
 ```powershell
+# Control Plane Environment Code is used to create unique names for control plane resources
 $Env:CONTROL_PLANE_ENVIRONMENT_CODE="CTRL"
+# Workload Environment Name is used to create unique names for workload resources
 $Env:WORKLOAD_ENV_NAME="PROD"
+# Location is the Azure region where the resources will be deployed
 $Env:LOCATION="eastus"
 $Env:ARM_TENANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-$Env:ARM_SUBSCRIPTION_ID = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+$Env:AZURE_SUBSCRIPTION_ID = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+# SAP Virtual Network ID where the SAP systems are deployed
 $Env:SAP_VIRTUAL_NETWORK_ID = "/subscriptions/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/resourceGroups/SAP/providers/Microsoft.Network/virtualNetworks/SAP-VNET"
+# Address prefix for the subnet where the backend printing service will be deployed
 $Env:BGPRINT_SUBNET_ADDRESS_PREFIX = "0.0.0.0/24"
+# Enable logging on the Azure Function App
 $Env:ENABLE_LOGGING_ON_FUNCTION_APP = "false"
+# Home Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john
 $Env:HOMEDRIVE = "/home/azureuser"
 
 $UniqueIdentifier = Read-Host "Please provide an identifier that makes the service principal names unique, for exaple (MGMT/CTRL)"
