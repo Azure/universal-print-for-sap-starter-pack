@@ -29,7 +29,7 @@ This project is setup with [Terraform](https://www.terraform.io/) for automated 
 
 ## Integration solution design 🏰 
   
-![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/86314060/71e17192-3281-40ec-b0ed-a9a0f8e66eb8)
+![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/86314060/82e771d8-9500-4d62-a1f3-5e0bb8d386c7)
 
 ## Configure backend printing solution🛠️
 
@@ -60,9 +60,8 @@ The workload plane is where the action happens. It’s all about processing thos
 ### Deploy the backend print solution
 
 1. **Start Your Engines**: Head over to the Azure portal and fire up the Azure Cloud Shell (Powershell).
-2. **Script Time**: Create a new file in the Cloud Shell editor. Copy and paste the below script (setup.ps1) into it. Make sure to tweak the parameters so they fit your SAP environment like a glove.
+2. **Script Time**: Create a new file in the Cloud Shell editor. Copy and paste the below script into it and save it with ps1 extension (example: setup.ps1). Once you save the file, you can click the refresh button and find the file on the root. Open the file and, tweak the parameters (description below) so they fit your SAP environment like a glove. 
 
-Once the script does its thing, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
 ```powershell
 $Env:CONTROL_PLANE_ENVIRONMENT_CODE="CTRL"
@@ -114,6 +113,10 @@ Invoke-Expression -Command $scriptPath
 | ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
 | HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
 
+
+On the powershell, execute the command using `./setup.ps1` command.
+
+Once the script does its thing successfully, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
 3. **Connect the Dots**: Jump to the workload plane resource group in the Azure portal. Find the API connection resource and hit the “Edit API connection” button. Then, give the green light by clicking “Authorize” to link up with the Universal Print API. The pop-up window would ask for authorization to access printer share. Once the window closes, remember to click the "Save" button to save the authorizaton connection.
 
