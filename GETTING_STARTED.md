@@ -65,21 +65,14 @@ The workload plane is where the action happens. It’s all about processing thos
 Once the script does its thing, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
 ```powershell
-# Control Plane Environment Code is used to create unique names for control plane resources
 $Env:CONTROL_PLANE_ENVIRONMENT_CODE="CTRL"
-# Workload Environment Name is used to create unique names for workload resources
 $Env:WORKLOAD_ENV_NAME="PROD"
-# Location is the Azure region where the resources will be deployed
 $Env:LOCATION="eastus"
 $Env:ARM_TENANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 $Env:AZURE_SUBSCRIPTION_ID = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
-# SAP Virtual Network ID where the SAP systems are deployed
 $Env:SAP_VIRTUAL_NETWORK_ID = "/subscriptions/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/resourceGroups/SAP/providers/Microsoft.Network/virtualNetworks/SAP-VNET"
-# Address prefix for the subnet where the backend printing service will be deployed
 $Env:BGPRINT_SUBNET_ADDRESS_PREFIX = "0.0.0.0/24"
-# Enable logging on the Azure Function App
 $Env:ENABLE_LOGGING_ON_FUNCTION_APP = "false"
-# Home Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john
 $Env:HOMEDRIVE = "/home/azureuser"
 
 $UniqueIdentifier = Read-Host "Please provide an identifier that makes the service principal names unique, for exaple (MGMT/CTRL)"
@@ -108,6 +101,19 @@ Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath
 
 Invoke-Expression -Command $scriptPath
 ```
+
+**Paramaters**
+
+| Name  | Description | Type | Example
+| ------------- | ------------- | ------------- | ------------- |
+| $Env:CONTROL_PLANE_ENVIRONMENT_CODE | Control Plane Environment Code is used to create unique names for control plane resources. | string | "CTRL", "MGMT" |
+| $Env:WORKLOAD_ENV_NAME | Workload Environment Name is used to create unique names for workload resources | string | "PROD", "TEST', "DEV" |
+| $Env:ARM_TENANT_ID | Azure Tenant ID | string | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
+| $Env:AZURE_SUBSCRIPTION_ID | Azure Subcription ID | string | "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy" |  
+| $Env:SAP_VIRTUAL_NETWORK_ID | SAP Virtual Network ID where the SAP systems are deployed  | string | ""/subscriptions/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/resourceGroups/SAP/providers/Microsoft.Network/virtualNetworks/SAP-VNET"
+| $Env:BGPRINT_SUBNET_ADDRESS_PREFIX | Address prefix for the subnet where the backend printing service will be deployed | string | "10.10.10.10/25" |
+| $Env:ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
+| $Env:HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
 
 3. **Connect the Dots**: Jump to the workload plane resource group in the Azure portal. Find the API connection resource and hit the “Edit API connection” button. Then, give the green light by clicking “Authorize” to link up with the Universal Print API.
 
@@ -139,7 +145,7 @@ Invoke-Expression -Command $scriptPath
 | ------------- | ------------- | ------------- | ------------- |
 | sap_environment | SAP landscape environment | string | "PROD" |
 | sap_sid | SAP system identifier | string | "SID" |
-| sap_hostname | SAP primary application server hostname or IP address with http protocol and port number | string | "http://full.qualified.domainname:8001" |
+| sap_hostname | Hostname or IP address of Web Dispatcher (recommended) or Primary Application Server with http protocol and port number | string | "http://full.qualified.domainname:8001" |
 | sap_user | SAP User with proper authorization | string | "USERNAME" |  
 | sap_password | Password for the SAP user  | string | "password"
 | sap_print_queues | List of print queue and Universal Printer Share mapping | list[map] | [{"queue_name":"ZQ1","print_share_id": "12345678-1234-1234-1234-123456789012"}
