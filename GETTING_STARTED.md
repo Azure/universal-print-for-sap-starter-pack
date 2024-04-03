@@ -102,20 +102,20 @@ Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath
 Invoke-Expression -Command $scriptPath
 ```
 
-**Paramaters**
-
+### Script Parameters
 | Name  | Description | Type | Example
-| ------------- | ------------- | ------------- | ------------- |
-| $Env:CONTROL_PLANE_ENVIRONMENT_CODE | Control Plane Environment Code is used to create unique names for control plane resources. | string | "CTRL", "MGMT" |
-| $Env:WORKLOAD_ENV_NAME | Workload Environment Name is used to create unique names for workload resources | string | "PROD", "TEST', "DEV" |
-| $Env:ARM_TENANT_ID | Azure Tenant ID | string | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
-| $Env:AZURE_SUBSCRIPTION_ID | Azure Subcription ID | string | "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy" |  
-| $Env:SAP_VIRTUAL_NETWORK_ID | SAP Virtual Network ID where the SAP systems are deployed  | string | ""/subscriptions/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/resourceGroups/SAP/providers/Microsoft.Network/virtualNetworks/SAP-VNET"
-| $Env:BGPRINT_SUBNET_ADDRESS_PREFIX | Address prefix for the subnet where the backend printing service will be deployed | string | "10.10.10.10/25" |
-| $Env:ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
-| $Env:HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
+| :--- | :------- | :--- | :--- |
+| CONTROL_PLANE_ENVIRONMENT_CODE | Control Plane Environment Code is used to create unique names for control plane resources. | string | "CTRL", "MGMT" |
+| WORKLOAD_ENV_NAME | Workload Environment Name is used to create unique names for workload resources | string | "PROD", "TEST', "DEV" |
+| ARM_TENANT_ID | Azure Tenant ID | string | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
+| AZURE_SUBSCRIPTION_ID | Azure Subcription ID | string | "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy" |  
+| SAP_VIRTUAL_NETWORK_ID | Resource ID of the Virtual Network where the SAP systems are deployed.  | string |
+| BGPRINT_SUBNET_ADDRESS_PREFIX | Address prefix for the subnet where the backend printing service will be deployed | string | "10.10.10.10/25" |
+| ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
+| HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
 
-3. **Connect the Dots**: Jump to the workload plane resource group in the Azure portal. Find the API connection resource and hit the “Edit API connection” button. Then, give the green light by clicking “Authorize” to link up with the Universal Print API.
+
+3. **Connect the Dots**: Jump to the workload plane resource group in the Azure portal. Find the API connection resource and hit the “Edit API connection” button. Then, give the green light by clicking “Authorize” to link up with the Universal Print API. The pop-up window would ask for authorization to access printer share. Once the window closes, remember to click the "Save" button to save the authorizaton connection.
 
 4. **Function App**: Now, take a stroll to the Function App and find the validator function on the overview screen. Click on “Code + Test”. Ready to connect the SAP? Hit the “Test/Run” button. In the body section, drop in the JSON payload provided below and press “Run”. If you see a happy “200 OK” response code, you’re all set! If not, the error message will give you clues to fix any hiccups.
    
@@ -148,7 +148,7 @@ Invoke-Expression -Command $scriptPath
 | sap_hostname | Hostname or IP address of Web Dispatcher (recommended) or Primary Application Server with http protocol and port number | string | "http://full.qualified.domainname:8001" |
 | sap_user | SAP User with proper authorization | string | "USERNAME" |  
 | sap_password | Password for the SAP user  | string | "password"
-| sap_print_queues | List of print queue and Universal Printer Share mapping | list[map] | [{"queue_name":"ZQ1","print_share_id": "12345678-1234-1234-1234-123456789012"}
+| sap_print_queues | List of print queue name and Universal Printer Share mapping. The printer share ID is on the overview blade of Universal Printer Share on Azure Portal. | list[map] | [{"queue_name":"ZQ1","print_share_id": "12345678-1234-1234-1234-123456789012"}
 
 5. **Test Drive**: It’s time to put the backend print worker to the test. Create a spool request in SAP and direct it to the print queue you’ve set up in the Cloud Print Manager. The backend print worker will grab the spool request and whisk it away to the Universal Print device.
 
@@ -158,19 +158,23 @@ Repeat step 4 and 5 for each SAP environment you want to connect to the backend 
 
 With everything in place, you’re ready to start printing from SAP to Azure’s Universal Print. It’s a game-changer for large-scale printing needs!
 
-### Naming convention followed for the resources deployed:
+<details>
+  <summary>Naming convention of resources</summary>
 
-Control Plane:
-- Resource Group Name: $CONTROL_PLANE_ENVIRONMENT_CODE-RG
-- Storage Account Name: $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting
-- Container Registry: sapprintacr
+  #### Control Plane:
+  - Resource Group Name: $CONTROL_PLANE_ENVIRONMENT_CODE-RG
+  - Storage Account Name: $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting
+  - Container Registry: sapprintacr
+  
+  #### Workload Plane:
+  - Resource Group Name: $WORKLOAD_ENV_NAME-$LOCATION-RG
+  - App Server Plan: $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN
+  - Function App: $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP
+  - Storage Account: $WORKLOAD_ENV_NAME$LOCATION$GUID
+  - Key Vault: $WORKLOAD_ENV_NAME$LOCATIONKV
+  - Logic App: $WORKLOAD_ENV_NAME$LOCATIONMSI
+  - Logic App Custom Connector: $WORKLOAD_ENV_NAME$LOCATION-$GUID
+  - API Connection: UPGRAPH-CONNECTION$GUID
+</details>
 
-Workload Plane:
-- Resource Group Name: $WORKLOAD_ENV_NAME-$LOCATION-RG
-- App Server Plan: $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN
-- Function App: $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP
-- Storage Account: $WORKLOAD_ENV_NAME$LOCATION$GUID
-- Key Vault: $WORKLOAD_ENV_NAME$LOCATIONKV
-- Logic App: $WORKLOAD_ENV_NAME$LOCATIONMSI
-- Logic App Custom Connector: $WORKLOAD_ENV_NAME$LOCATION-$GUID
-- API Connection: UPGRAPH-CONNECTION$GUID
+
