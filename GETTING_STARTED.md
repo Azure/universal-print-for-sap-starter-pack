@@ -10,8 +10,8 @@ This project is setup with [Terraform](https://www.terraform.io/) for automated 
 
 ### Azure
 
-- **Entra ID Tenant**
-- **Azure Subscription**
+- **Entra ID Tenant ID**
+- **Azure Subscription ID**
 
 ### Microsoft Universal Print
 
@@ -25,7 +25,7 @@ This project is setup with [Terraform](https://www.terraform.io/) for automated 
 - **Authorized SAP User**: An individual empowered with the rights to generate and oversee spool requests and print queues, ensuring a smooth and secure printing process.
 
 > [!NOTE]
-> Consider implementing the SAP Cloud Print Manager to troubleshoot the SAP Print Queue component. Instructions are detailed in the attached PDF of [SAP Note](https://me.sap.com/notes/3420465).
+> Consider implementing the SAP Cloud Print Manager to troubleshoot the SAP Print Queue component prior the integration with Universal Print to rule out any SAP internal configuration issues. SAP's Instructions are detailed in the attached PDF of [SAP Note](https://me.sap.com/notes/3420465). Don't forget to disable the Cloud Print Manager afterwards. Otherwise, it competes with your solution in grabbing print items ;-).
 
 ## Integration solution design 🏰 
   
@@ -59,20 +59,36 @@ The workload plane is where the action happens. It’s all about processing thos
 
 ### Deploy the backend print solution
 
-1. **Start Your Engines**: Head over to the Azure portal and fire up the Azure Cloud Shell (Powershell).
-2. **Script Time**: Create a new file in the Cloud Shell editor. Copy and paste the below script into it and save it with ps1 extension (example: setup.ps1). Once you save the file, you can click the refresh button and find the file on the root. Open the file and, tweak the parameters (description below) so they fit your SAP environment like a glove. 
+> [!NOTE]
+> There are many ways to deploy the solution, among them local terraform installation, incorporation into your CI/CD pipeline etc. if you are familiar with them. However, this guide focusses on getting started with as few prerequisites as possible. For that reason the Azure Cloud Shell from within the Azure portal is being used. It ships an up to date terraform installation out of the box.
 
+1. Open the [Azure Cloud Shell (Powershell)](https://portal.azure.com/#cloudshell/) from within the Azure portal.
+2. Create a new file in the Cloud Shell editor. Copy and paste the below script into it and save it with ps1 extension (example: setup.ps1). Once you save the file, you can click the refresh button and find the file on the root. Open the file and, tweak the parameters (description below) so they fit your SAP environment. 
+
+#### Script Parameters
+
+| Name  | Description | Type | Example
+| :--- | :------- | :--- | :--- |
+| CONTROL_PLANE_ENVIRONMENT_CODE | Control Plane Environment Code is used to create unique names for control plane resources. | string | "CTRL", "MGMT" |
+| WORKLOAD_ENV_NAME | Workload Environment Name is used to create unique names for workload resources | string | "PROD", "TEST', "DEV" |
+| ENTRA_ID_TENANT_ID | Entra ID Tenant ID | string | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
+| AZURE_SUBSCRIPTION_ID | Azure Subcription ID | string | "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy" |  
+| SAP_VIRTUAL_NETWORK_ID | Resource ID of the Virtual Network where the SAP systems are deployed.  | string |
+| BGPRINT_SUBNET_ADDRESS_PREFIX | Address prefix for the subnet where the backend printing service will be deployed | string | "10.10.10.10/25" |
+| ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
+| HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
 
 ```powershell
 $Env:CONTROL_PLANE_ENVIRONMENT_CODE="CTRL"
 $Env:WORKLOAD_ENV_NAME="PROD"
 $Env:LOCATION="eastus"
-$Env:ARM_TENANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+$Env:ENABLE_LOGGING_ON_FUNCTION_APP = "false"
+
+$Env:HOMEDRIVE = "/home/azureuser"
+$Env:ENTRA_ID_TENANT_ID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 $Env:AZURE_SUBSCRIPTION_ID = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
 $Env:SAP_VIRTUAL_NETWORK_ID = "/subscriptions/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/resourceGroups/SAP/providers/Microsoft.Network/virtualNetworks/SAP-VNET"
 $Env:BGPRINT_SUBNET_ADDRESS_PREFIX = "0.0.0.0/24"
-$Env:ENABLE_LOGGING_ON_FUNCTION_APP = "false"
-$Env:HOMEDRIVE = "/home/azureuser"
 
 $UniqueIdentifier = Read-Host "Please provide an identifier that makes the service principal names unique, for exaple (MGMT/CTRL)"
 
@@ -101,26 +117,22 @@ Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath
 Invoke-Expression -Command $scriptPath
 ```
 
-### Script Parameters
-| Name  | Description | Type | Example
-| :--- | :------- | :--- | :--- |
-| CONTROL_PLANE_ENVIRONMENT_CODE | Control Plane Environment Code is used to create unique names for control plane resources. | string | "CTRL", "MGMT" |
-| WORKLOAD_ENV_NAME | Workload Environment Name is used to create unique names for workload resources | string | "PROD", "TEST', "DEV" |
-| ARM_TENANT_ID | Azure Tenant ID | string | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
-| AZURE_SUBSCRIPTION_ID | Azure Subcription ID | string | "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy" |  
-| SAP_VIRTUAL_NETWORK_ID | Resource ID of the Virtual Network where the SAP systems are deployed.  | string |
-| BGPRINT_SUBNET_ADDRESS_PREFIX | Address prefix for the subnet where the backend printing service will be deployed | string | "10.10.10.10/25" |
-| ENABLE_LOGGING_ON_FUNCTION_APP | Enable logging on the Azure Function App | bool string | "true"/"false" | 
-| HOMEDRIVE | Drive for the azure user. This is the location you see when you are in the Azure Cloud Shell. Example: /home/john | string | "/home/john" |
+3. On the powershell, execute the command using `./setup.ps1` command.
 
+4. Once the script finishes, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
-On the powershell, execute the command using `./setup.ps1` command.
+#### Authorize API connection to Universal Print
 
-Once the script does its thing successfully, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
+5. Jump to the workload plane resource group in the Azure portal.
+6. Find the API connection resource and hit the "Edit API connection" button.
+7. Click "Authorize" to link up with the Universal Print API. Once the pop-up window closes, remember to click the "Save" button to save the authorizaton connection.
 
-3. **Connect the Dots**: Jump to the workload plane resource group in the Azure portal. Find the API connection resource and hit the “Edit API connection” button. Then, give the green light by clicking “Authorize” to link up with the Universal Print API. The pop-up window would ask for authorization to access printer share. Once the window closes, remember to click the "Save" button to save the authorizaton connection.
+#### Add SAP print queue configuration to the function app
 
-4. **Function App**: Now, take a stroll to the Function App and find the validator function on the overview screen. Click on “Code + Test”. Ready to connect the SAP? Hit the “Test/Run” button. In the body section, drop in the JSON payload provided below and press “Run”. If you see a happy “200 OK” response code, you’re all set! If not, the error message will give you clues to fix any hiccups.
+8. Open the Function App and find the validator function on the overview screen.
+9. Click on "Code + Test". Ready to connect the SAP?
+10. Hit the "Test/Run" button.
+11. In the body section, drop in the JSON payload provided below and press "Run". If you see a happy "200 OK" response code, you’re all set! If not, the error message will give you clues to fix any hiccups.
    
 ```json
 {
@@ -142,7 +154,7 @@ Once the script does its thing successfully, you’ll have both the control plan
 }
 ```
 
-**Paramaters**
+##### Function app paramaters
 
 | Name  | Description | Type | Example
 | ------------- | ------------- | ------------- | ------------- |
@@ -153,31 +165,16 @@ Once the script does its thing successfully, you’ll have both the control plan
 | sap_password | Password for the SAP user  | string | "password"
 | sap_print_queues | List of print queue name and Universal Printer Share mapping. The printer share ID is on the overview blade of Universal Printer Share on Azure Portal. | list[map] | [{"queue_name":"ZQ1","print_share_id": "12345678-1234-1234-1234-123456789012"}
 
-5. **Test Drive**: It’s time to put the backend print worker to the test. Create a spool request in SAP and direct it to the print queue you’ve set up in the Cloud Print Manager. The backend print worker will grab the spool request and whisk it away to the Universal Print device.
+Add more queues or SAP environments by repeating the configuration steps above.
 
-Repeat step 4 and 5 for each SAP environment you want to connect to the backend print worker.
+## Integration Test!
+
+The simplest means for an integration test would be printing the ALV screen from transaction SP02. Find the print button and choose your new print queue as Output Device.
+
+![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/5108923/c9e9798b-bd2a-4b76-9cb2-82c64dd9cff3)
+
+On S/4HANA Cloud tenants that ship Fiori apps or don’t offer SAPGUI access anymore use the app “Maintain Print Queues” and trigger “Create Test Page”.
+
+![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/5108923/ba2a4e5e-ed8a-4ef4-9cb4-9eeb8b7d8229)
 
 ## Ready, Set, Print🚀
-
-With everything in place, you’re ready to start printing from SAP to Azure’s Universal Print. It’s a game-changer for large-scale printing needs!
-
-<details>
-  <summary>Naming convention of resources</summary>
-
-  #### Control Plane:
-  - Resource Group Name: $CONTROL_PLANE_ENVIRONMENT_CODE-RG
-  - Storage Account Name: $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting
-  - Container Registry: sapprintacr
-  
-  #### Workload Plane:
-  - Resource Group Name: $WORKLOAD_ENV_NAME-$LOCATION-RG
-  - App Server Plan: $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN
-  - Function App: $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP
-  - Storage Account: $WORKLOAD_ENV_NAME$LOCATION$GUID
-  - Key Vault: $WORKLOAD_ENV_NAME$LOCATIONKV
-  - Logic App: $WORKLOAD_ENV_NAME$LOCATIONMSI
-  - Logic App Custom Connector: $WORKLOAD_ENV_NAME$LOCATION-$GUID
-  - API Connection: UPGRAPH-CONNECTION$GUID
-</details>
-
-
