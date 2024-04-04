@@ -155,6 +155,12 @@ Invoke-Expression -Command $scriptPath
 }
 ```
 
+Get the printer share id from the [Azure Portal](https://portal.azure.com/?#view/Universal_Print/MainMenuBlade/~/PrinterShares), via [Powershell](https://learn.microsoft.com/universal-print/fundamentals/universal-print-powershell), or the [Graph API](https://learn.microsoft.com/graph/api/print-list-shares?view=graph-rest-1.0&tabs=http). What ever suits you best.
+
+![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/5108923/46b6b2fe-e425-4ee5-9827-28370ecef6d3)
+
+See above a Screenshot from the portal experience to collect the id.
+
 ##### Function app paramaters
 
 | Name  | Description | Type | Example
