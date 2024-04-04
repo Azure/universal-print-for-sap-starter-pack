@@ -2,7 +2,7 @@
 
 **[🏠Home](README.md)**
 
-This open-source solution interacts with the Print Queue on the SAP backend via the SAP OData service [API_CLOUD_PRINT_PULL_SRV](https://api.sap.com/api/API_CLOUD_PRINT_PULL_SRV/overview) and dispatches the requests to Microsoft Universal Print managed printers via the [Microsoft Graph API](https://learn.microsoft.com/graph/api/resources/print?view=graph-rest-1.0).
+This open-source solution interacts with the [SAP Print Queue](https://help.sap.com/docs/SAP_S4HANA_CLOUD/0f69f8fb28ac4bf48d2b57b9637e81fa/1e39bb68bbda4c48af4a79d35f5837e0.html) on the SAP backend via the SAP OData service [API_CLOUD_PRINT_PULL_SRV](https://api.sap.com/api/API_CLOUD_PRINT_PULL_SRV/overview) and dispatches the requests to Microsoft Universal Print managed printers via the [Microsoft Graph API](https://learn.microsoft.com/graph/api/resources/print?view=graph-rest-1.0).
 
 This project is setup with [Terraform](https://www.terraform.io/) for automated provisioning.
 
@@ -185,3 +185,5 @@ On S/4HANA Cloud tenants that ship Fiori apps or don’t offer SAPGUI access any
 ![image](https://github.com/devanshjainms/universal-print-for-sap-starter-pack/assets/5108923/ba2a4e5e-ed8a-4ef4-9cb4-9eeb8b7d8229)
 
 ## Ready, Set, Print🚀
+
+You have more questions? Check out the [FAQ](FAQ.md) or reach out to us via [email](mailto:martin.pankraz@microsoft.com)
