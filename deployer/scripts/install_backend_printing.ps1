@@ -98,11 +98,11 @@ az group create --name $CONTROL_PLANE_RESOURCE_GROUP_NAME --location eastus --on
 
 # Create the Azure container registry and build the docker image
 Write-Host "######## Build the docker image and push it to the ACR registry ########" -ForegroundColor Green
-az acr create --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --sku Basic --only-show-errors
+az acr create --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --sku Basic
 Start-Sleep -Seconds 10 # Wait for the ACR to be created
-az acr show --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --only-show-errors
-az acr login --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --expose-token --only-show-errors
-az acr build --registry $ACR_NAME --image bgprinting:latest --file ./backend-printing/Dockerfile ./backend-printing --only-show-errors
+az acr show --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME
+az acr login --name $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --expose-token
+az acr build --registry $ACR_NAME --resource-group $CONTROL_PLANE_RESOURCE_GROUP_NAME --image bgprinting:latest --file ./backend-printing/Dockerfile ./backend-printing --no-logs
 
 Write-Host "######## Creating storage account to store the terraform state ########" -ForegroundColor Green
 # Create storage account
