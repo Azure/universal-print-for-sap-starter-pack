@@ -122,11 +122,38 @@ Invoke-Expression -Command $scriptPath
 
 4. Once the script finishes, you’ll have both the control plane and the backend print worker neatly deployed in your Azure subscription.
 
+<br>
+<details><summary><strong>⤵️Naming convention followed for the resources deployed</strong></summary>
+
+#### Control Plane Naming Convention
+
+| Resource | Naming Convention |
+| --- | --- |
+| Resource Group Name | $CONTROL_PLANE_ENVIRONMENT_CODE-RG |
+| Storage Account Name | $CONTROL_PLANE_ENVIRONMENT_CODEtstatebgprinting |
+| Container Registry | sapprintacr |
+
+#### Workload Plane Naming Convention
+
+| Resource | Naming Convention |
+| --- | --- |
+| Resource Group Name | $WORKLOAD_ENV_NAME-$LOCATION-RG |
+| App Server Plan | $WORKLOAD_ENV_NAME-$LOCATION-APPSERVICEPLAN |
+| Function App | $WORKLOAD_ENV_NAME-$LOCATION-FUNCTIONAPP |
+| Storage Account | $WORKLOAD_ENV_NAME$LOCATION$GUID |
+| Key Vault | $WORKLOAD_ENV_NAME$LOCATIONKV |
+| Logic App | $WORKLOAD_ENV_NAME$LOCATIONMSI |
+| Logic App Custom Connector | $WORKLOAD_ENV_NAME$LOCATION-$GUID |
+| API Connection | UPGRAPH-CONNECTION$GUID |
+
+</details>
+<br>
+
 #### Authorize API connection to Universal Print
 
 5. Jump to the workload plane resource group in the Azure portal.
 6. Find the API connection resource and hit the "Edit API connection" button.
-7. Click "Authorize" to link up with the Universal Print API. Once the pop-up window closes, remember to click the "Save" button to save the authorizaton connection.
+7. Click "Authorize" to link up with the Universal Print API. Once the pop-up window closes, remember to click the "Save" button to save the authorization connection.
 
 #### Add SAP print queue configuration to the function app
 
