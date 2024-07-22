@@ -2,7 +2,7 @@
 
 Printing from SAP landscapes is a requirement for many customers. Examples can be data list printing, mass- or label printing. Such production and batch print scenarios are often solved with specialized hardware, drivers, and printing solutions.
 
-[Microsoft Universal Print](https://learn.microsoft.com/universal-print/fundamentals/universal-print-whatis) is a cloud-based print solution that enables organizations to manage printers and printer drivers in a centralized manner. Removes the need to use dedicated printer servers and available for use by company employees and applications.
+[Microsoft Universal Print](https://learn.microsoft.com/en-us/universal-print/discover-universal-print) is a cloud-based print solution that enables organizations to manage printers and printer drivers in a centralized manner. Removes the need to use dedicated printer servers and available for use by company employees and applications.
 
 For SAP, we distinguish between:
 
