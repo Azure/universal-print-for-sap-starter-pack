@@ -15,7 +15,7 @@ This project is setup with [Terraform](https://www.terraform.io/) for automated 
 
 ### Microsoft Universal Print
 
-- **Microsoft Universal Print License**: Learn More About Licensing and included free requests [here](https://learn.microsoft.com/universal-print/fundamentals/universal-print-license).
+- **Microsoft Universal Print License**: Learn More About Licensing and included free requests [here](https://learn.microsoft.com/en-us/universal-print/get-access-to-universal-print).
 - **Registered Printers**: At least one physical printer registered in [Microsoft Universal Print](https://portal.azure.com/#view/Universal_Print/MainMenuBlade/~/Overview). Check the [Printer Registration Guide](https://learn.microsoft.com/en-us/universal-print/fundamentals/universal-print-printer-registration) for details.
 
 ### SAP System
