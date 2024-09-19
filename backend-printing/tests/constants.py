@@ -16,7 +16,7 @@ SAP_CONFIG = {
 }
 SAP_CONFIG_KV = [
     KeyVaultSecret(
-        value='{"sap_sid": "TT1", "sap_environment": "DEV", "sap_user": "SAPUSER", "sap_password": "***", "sap_hostname": "http://10.0.0.0:8001", "sap_print_queues": [{"queue_name": "ZQ1", "print_share_id": "xxxxxx-xxxxx-xxxxxx-xxxxxx-xxxxx"}]}',
+        value='{"sap_sid": "ABC", "sap_environment": "DEV", "sap_user": "SAPUSER", "sap_password": "***", "sap_hostname": "http://127.0.0.1:8001", "sap_print_queues": [{"queue_name": "ZQ1", "print_share_id": "xxxxxx-xxxxx-xxxxxx-xxxxxx-xxxxx"}]}',
         properties=SecretProperties(
             name="BGPRINT",
             vault_id="https://test.vault.azure.net/secrets/BGPRINT/",
@@ -24,7 +24,7 @@ SAP_CONFIG_KV = [
         ),
     ),
     KeyVaultSecret(
-        value='{"sap_sid": "TT1", "sap_environment": "DEV", "sap_user": "SAPUSER", "sap_password": "***", "sap_hostname": "http://10.0.0.0:8001", "sap_print_queues": [{"queue_name": "ZQ1", "print_share_id": "xxxxxx-xxxxx-xxxxxx-xxxxxx-xxxxx"}]}',
+        value='{"sap_sid": "ABC", "sap_environment": "DEV", "sap_user": "SAPUSER", "sap_password": "***", "sap_hostname": "http://127.0.0.1:8001", "sap_print_queues": [{"queue_name": "ZQ1", "print_share_id": "xxxxxx-xxxxx-xxxxxx-xxxxxx-xxxxx"}]}',
         properties=SecretProperties(
             name="BGPRINT2",
             vault_id="https://test.vault.azure.net/secrets/BGPRINT/",
@@ -47,7 +47,7 @@ PRINT_QUEUE_ITEM = [
 
 STORAGE_QUEUE_ITEMS = [
     (
-        QueueMessage(content=b'{}'),
+        QueueMessage(content=b"{}"),
         {
             "print_item": {"queue_item_id": "id"},
             "sap_sid": "sid",
@@ -56,7 +56,7 @@ STORAGE_QUEUE_ITEMS = [
         },
     ),
     (
-        QueueMessage(content=b'{}'),
+        QueueMessage(content=b"{}"),
         {
             "print_item": {"queue_item_id": "id"},
             "sap_sid": "sid",
