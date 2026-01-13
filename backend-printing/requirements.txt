@@ -6,7 +6,7 @@ async-timeout==5.0.1
 attrs==25.1.0
 az==0.1.0.dev1
 azure-common==1.1.28
-azure-core==1.32.0
+azure-core==1.38.0
 azure-data-tables==12.6.0
 azure-functions==1.21.3
 azure-identity==1.19.0
